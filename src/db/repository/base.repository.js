@@ -11,8 +11,8 @@ export default class BaseRepository {
     return this.model.findById(id);
   }
 
-  findAll(limit = 0, sortBy = "createdAt") {
-    const query = this.model.find().sort({ [sortBy]: -1 });
+  findAll(limit = 0, sortBy = "createdAt", order = -1) {
+    const query = this.model.find().sort({ [sortBy]: order });
 
     return limit > 0 ? query.limit(limit) : query;
   }
