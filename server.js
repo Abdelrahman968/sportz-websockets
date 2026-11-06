@@ -1,5 +1,8 @@
-import { mongooseConnect, mongooseDisconnect } from "./db/mongoose.connect.js";
 import app from "./src/app.js";
+import {
+  mongooseConnect,
+  mongooseDisconnect,
+} from "./src/db/mongoose.connect.js";
 
 const PORT = 3000;
 
