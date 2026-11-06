@@ -39,6 +39,20 @@ const matchSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        const { _id, __v, ...rest } = ret;
+
+        return {
+          id: _id.toString(),
+          ...rest,
+        };
+      },
+    },
+    toObject: {
+      virtuals: true,
+    },
   },
 );
 

@@ -67,6 +67,21 @@ const commentarySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        const { _id, __v, matchId, ...rest } = ret;
+
+        return {
+          id: _id.toString(),
+          matchId,
+          ...rest,
+        };
+      },
+    },
+    toObject: {
+      virtuals: true,
+    },
   },
 );
 

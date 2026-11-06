@@ -32,7 +32,7 @@ export const createMatchSchema = z
 
     if (end <= start) {
       ctx.addIssue({
-        code: "invalid_type",
+        code: "custom",
         message: "endTime must be chronologically after startTime",
         path: ["endTime"],
       });
