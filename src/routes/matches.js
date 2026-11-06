@@ -23,9 +23,9 @@ matchesRouter.get("/", async (req, res) => {
     });
   }
 
-  const { limit } = parsed.data;
-
   try {
+    const { limit } = parsed.data;
+
     const matches = await matchRepository.findAll(limit);
     res.status(200).json({
       success: true,
@@ -63,6 +63,10 @@ matchesRouter.post("/create", async (req, res) => {
       endTime: new Date(endTime),
       status: getMatchStatus(startTime, endTime),
     });
+
+    if (res.app.locals.broadcastMatchCreated) {
+      res.app.locals.broadcastMatchCreated(match);
+    }
 
     res.status(201).json({ success: true, message: "Match created", match });
   } catch (err) {
