@@ -10,8 +10,11 @@ export default class BaseRepository {
   findById(id) {
     return this.model.findById(id);
   }
-  findAll() {
-    return this.model.find();
+
+  findAll(limit = 0, sortBy = "createdAt") {
+    const query = this.model.find().sort({ [sortBy]: -1 });
+
+    return limit > 0 ? query.limit(limit) : query;
   }
 
   findOne(filter, options = {}) {

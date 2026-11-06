@@ -6,8 +6,15 @@ export const MATCH_STATUS = {
   FINISHED: "finished",
 };
 
+const MAX_LIMIT = 100;
+
 export const listMatchesQuerySchema = z.object({
-  limit: z.coerce.number().int().positive().max(100).optional(),
+  limit: z.coerce
+    .number()
+    .int("Limit must be an integer")
+    .min(1, "Limit must be at least 1")
+    .max(MAX_LIMIT, `Limit cannot exceed ${MAX_LIMIT}`)
+    .default(50),
 });
 
 export const matchIdParamSchema = z.object({

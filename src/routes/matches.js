@@ -1,13 +1,32 @@
 import { Router } from "express";
-import { createMatchSchema } from "../validation/matches.js";
+import {
+  createMatchSchema,
+  listMatchesQuerySchema,
+} from "../validation/matches.js";
 import matchRepository from "../db/repository/match.repository.js";
 import { getMatchStatus } from "../utils/match-status.js";
 
 export const matchesRouter = Router();
 
-matchesRouter.get("/", async (_req, res) => {
+matchesRouter.get("/", async (req, res) => {
+  const parsed = listMatchesQuerySchema.safeParse(req.query);
+
+  if (!parsed.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: parsed.error.issues.map((i) => ({
+        code: i.code,
+        field: i.path.join("."),
+        message: i.message,
+      })),
+    });
+  }
+
+  const { limit } = parsed.data;
+
   try {
-    const matches = await matchRepository.findAll();
+    const matches = await matchRepository.findAll(limit);
     res.status(200).json({
       success: true,
       message: "Matches retrieved successfully",
